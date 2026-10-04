@@ -222,17 +222,80 @@ html:not(.tw-touch-mode) .sd-nav button {
   html.tw-touch-mode .sd-daylight { display: none; }
 }
 
-@media (max-height: 450px) and (min-aspect-ratio: 4/3) {
-  html.tw-touch-mode .tw-stick { width: 102px; }
-  html.tw-touch-mode .tw-actions { grid-template-columns: repeat(2, 55px); gap: 5px; }
-  html.tw-touch-mode .tw-touch button { min-height: 41px; }
-  html.tw-touch-mode .tw-actions .tw-cast { min-height: 44px; }
-  html.tw-touch-mode .tw-tools { top: calc(env(safe-area-inset-top) + 116px); }
+@media (max-height: 500px) and (min-aspect-ratio: 4/3) {
+  html.tw-touch-mode .sd-header,
+  html.tw-touch-mode .sd-bottom,
+  html.tw-touch-mode .sd-wallet,
+  html.tw-touch-mode .sd-instruments { display: none; }
+  html.tw-touch-mode .sd-brand,
+  html.tw-touch-mode .sd-daylight { display: none; }
+  html.tw-touch-mode.tw-landscape-menu-open .sd-header {
+    display: flex;
+    inset: calc(env(safe-area-inset-top) + 6px) 110px auto var(--tw-edge-left);
+    justify-content: flex-start;
+  }
+  html.tw-touch-mode.tw-landscape-menu-open .sd-bottom {
+    display: block;
+    top: calc(env(safe-area-inset-top) + 47px);
+    bottom: auto;
+    left: var(--tw-edge-left);
+    transform: none;
+    max-width: calc(100vw - 24px);
+  }
+  html.tw-touch-mode .sd-top { gap: 3px; max-width: calc(100vw - 130px); }
+  html.tw-touch-mode .sd-root .sd-top .sd-button {
+    min-height: 31px;
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+  html.tw-touch-mode .sd-nav { gap: 0; padding: 1px; max-width: calc(100vw - 24px); }
+  html.tw-touch-mode .sd-root .sd-nav button {
+    min-width: 0;
+    min-height: 31px;
+    padding: 4px 8px;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+  html.tw-touch-mode .tw-look { left: 17%; }
+  html.tw-touch-mode .tw-stick {
+    width: clamp(76px, 22vh, 88px);
+    left: calc(var(--tw-edge-left) - 3px);
+    bottom: calc(var(--tw-edge-bottom) - 4px);
+  }
+  html.tw-touch-mode .tw-actions {
+    grid-template-columns: repeat(2, 43px);
+    gap: 4px;
+    right: calc(var(--tw-edge-right) - 3px);
+    bottom: calc(var(--tw-edge-bottom) - 4px);
+  }
+  html.tw-touch-mode .tw-actions button {
+    min-height: 35px;
+    padding: 3px;
+    border-radius: 9px;
+    font-size: 10px;
+  }
+  html.tw-touch-mode .tw-actions .tw-cast { min-height: 38px; }
+  html.tw-touch-mode .tw-tools {
+    top: calc(env(safe-area-inset-top) + 6px);
+    gap: 4px;
+  }
+  html.tw-touch-mode .tw-tools button[data-key] { display: none; }
+  html.tw-touch-mode .tw-tools button {
+    min-height: 32px;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+  }
   html.tw-touch-mode .tw-extra {
-    top: calc(env(safe-area-inset-top) + 116px);
+    top: calc(env(safe-area-inset-top) + 88px);
     left: var(--tw-edge-left);
     right: auto;
     display: flex;
+    gap: 4px;
   }
-  html.tw-touch-mode .sd-instruments { display: none; }
+  html.tw-touch-mode .tw-extra button {
+    min-height: 32px;
+    padding: 3px 7px;
+    font-size: 10px;
+  }
 }

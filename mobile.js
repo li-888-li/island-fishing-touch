@@ -252,9 +252,21 @@
   });
   const more = document.getElementById('tw-more');
   const extra = document.getElementById('tw-extra');
+  const landscapeMenu = matchMedia('(max-height: 500px) and (min-aspect-ratio: 4/3)');
+  function syncLandscapeMenu() {
+    document.documentElement.classList.toggle('tw-landscape-menu-open', landscapeMenu.matches && !extra.hidden);
+  }
   more.addEventListener('click', () => {
     extra.hidden = !extra.hidden;
     more.setAttribute('aria-expanded', String(!extra.hidden));
+    syncLandscapeMenu();
+  });
+  landscapeMenu.addEventListener?.('change', syncLandscapeMenu);
+  document.addEventListener('click', event => {
+    if (!landscapeMenu.matches || !event.target.closest('.sd-nav button, .sd-top button')) return;
+    extra.hidden = true;
+    more.setAttribute('aria-expanded', 'false');
+    syncLandscapeMenu();
   });
 
   const releaseAll = () => {
