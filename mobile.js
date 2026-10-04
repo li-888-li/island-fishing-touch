@@ -39,6 +39,86 @@
   };
   const resumeAudio = () => window.__app?.audio?.resume?.();
 
+  function showGraphicsError(message) {
+    let notice = document.getElementById('tw-graphics-error');
+    if (!notice) {
+      notice = document.createElement('div');
+      notice.id = 'tw-graphics-error';
+      notice.className = 'tw-graphics-error';
+      notice.setAttribute('role', 'alert');
+      const title = document.createElement('strong');
+      title.textContent = '手机图形设备出现错误';
+      const detail = document.createElement('p');
+      const reload = document.createElement('button');
+      reload.type = 'button';
+      reload.textContent = '重新加载';
+      reload.addEventListener('click', () => location.reload());
+      notice.append(title, detail, reload);
+      document.body.appendChild(notice);
+    }
+    notice.querySelector('p').textContent = String(message || '请将此画面截图发给我排查。').slice(0, 240);
+  }
+  window.addEventListener('tw-gpu-error', event => showGraphicsError(event.detail));
+
+  let normalGraphics = null;
+  function setCompatibility(app, enabled) {
+    const post = app.post;
+    if (!normalGraphics) normalGraphics = {
+      aaMode: post.aaMode,
+      exposure: post.autoExposure.enabled.value,
+      shutter: post.motionBlur.shutter.value,
+      bloom: post.params.bloom.value,
+    };
+    post.aaMode = enabled ? 'none' : normalGraphics.aaMode;
+    post.autoExposure.enabled.value = enabled ? 0 : normalGraphics.exposure;
+    post.motionBlur.shutter.value = enabled ? 0 : normalGraphics.shutter;
+    post.params.bloom.value = enabled ? 0 : normalGraphics.bloom;
+    post.taau._needsRestart = true;
+    document.getElementById('tw-render-recover').textContent = enabled ? '恢复正常' : '修复画面';
+  }
+
+  let gpuChecks = 0;
+  const gpuWatch = setInterval(() => {
+    const app = window.__app;
+    const device = app?.gpu?.device;
+    if (!device) {
+      if (++gpuChecks > 360) clearInterval(gpuWatch);
+      return;
+    }
+    clearInterval(gpuWatch);
+    if (app.post?.params?.sharpen) app.post.params.sharpen.value = 0.55;
+    if (new URLSearchParams(location.search).has('compat')) setCompatibility(app, true);
+    device.addEventListener?.('uncapturederror', event => {
+      showGraphicsError(event.error?.message || 'WebGPU 画面错误');
+    });
+    device.lost.then(info => showGraphicsError(info.message || '图形设备已停止工作'));
+  }, 250);
+
+  function attachPrompt() {
+    const prompt = document.querySelector('.sd-prompt');
+    if (!prompt) return false;
+    prompt.setAttribute('role', 'button');
+    prompt.setAttribute('aria-label', '点按互动');
+    prompt.tabIndex = 0;
+    prompt.addEventListener('pointerdown', event => {
+      const label = prompt.querySelector('kbd')?.textContent?.trim();
+      const code = label === '点按' || label === 'E' ? 'KeyE' : label === '空格' || label === 'Space' ? 'Space' : null;
+      if (!code) return;
+      event.preventDefault();
+      event.stopPropagation();
+      resumeAudio();
+      emitKey(code, true);
+      emitKey(code, false);
+    });
+    return true;
+  }
+  if (!attachPrompt()) {
+    const promptWatch = new MutationObserver(() => {
+      if (attachPrompt()) promptWatch.disconnect();
+    });
+    promptWatch.observe(document.body, { childList: true, subtree: true });
+  }
+
   const stick = controls.querySelector('.tw-stick');
   const thumb = controls.querySelector('.tw-stick-thumb');
   let stickPointer = null;
@@ -137,16 +217,35 @@
     button.addEventListener('lostpointercapture', release);
   }
 
-  document.getElementById('tw-quality').addEventListener('click', () => {
+  const qualityButton = document.getElementById('tw-quality');
+  qualityButton.addEventListener('click', () => {
     const query = new URLSearchParams(location.search);
-    const lite = query.get('quality') === 'lite';
-    query.set('quality', lite ? 'high' : 'lite');
-    query.set('scale', lite ? '1' : '0.65');
-    for (const flag of ['noClouds', 'noHaze', 'noCaustics', 'noSim']) {
-      if (lite) query.delete(flag);
-      else query.set(flag, '');
-    }
-    location.search = query.toString();
+    const current = Number(query.get('scale')) || window.__app?.post?.scale || 0.65;
+    const next = [0.65, 0.85, 1].find(value => value > current + 0.01) ?? 0.65;
+    query.set('scale', String(next));
+    const app = window.__app;
+    if (app?.setRenderScale) {
+      try {
+        app.setRenderScale(next);
+        history.replaceState(null, '', `${location.pathname}?${query.toString()}${location.hash}`);
+        qualityButton.setAttribute('aria-label', `当前画质 ${Math.round(next * 100)}%，点按继续切换`);
+        qualityButton.textContent = `${Math.round(next * 100)}%`;
+        setTimeout(() => { qualityButton.textContent = '画质'; }, 1600);
+      } catch (error) {
+        showGraphicsError(error.message);
+      }
+    } else location.search = query.toString();
+  });
+  document.getElementById('tw-render-recover').addEventListener('click', () => {
+    const query = new URLSearchParams(location.search);
+    const enabled = !query.has('compat');
+    if (enabled) query.set('compat', '1');
+    else query.delete('compat');
+    const app = window.__app;
+    if (app?.post) {
+      setCompatibility(app, enabled);
+      history.replaceState(null, '', `${location.pathname}?${query.toString()}${location.hash}`);
+    } else location.search = query.toString();
   });
   const more = document.getElementById('tw-more');
   const extra = document.getElementById('tw-extra');
