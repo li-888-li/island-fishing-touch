@@ -4,6 +4,18 @@
   const touchMode = matchMedia('(pointer: coarse)').matches || new URLSearchParams(location.search).has('touch');
   if (touchMode) document.documentElement.classList.add('tw-touch-mode');
 
+  if (touchMode) {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      const progress = loader?.querySelector('progress');
+      if (!loader || loader.hidden || !progress || Number(progress.value) !== 0.02) return;
+      const hint = document.createElement('p');
+      hint.className = 'tw-gpu-hint';
+      hint.textContent = '长时间停在 2%：手机正在连接图形设备。请更新浏览器和系统；若仍无法进入，可能是这台设备暂不支持所需的 WebGPU 功能。';
+      loader.querySelector('.sd-loading')?.appendChild(hint);
+    }, 20000);
+  }
+
   if (!navigator.gpu) {
     unsupported.hidden = false;
     return;

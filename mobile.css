@@ -123,6 +123,7 @@ body { overscroll-behavior: none; }
 }
 .tw-unsupported h1 { margin: 0; font-size: clamp(20px, 5vw, 30px); }
 .tw-unsupported p { margin: 0; max-width: 35rem; }
+.sd-loading .tw-gpu-hint { margin: 18px auto 0; color: #fff9e9; font-size: 12px; line-height: 1.6; letter-spacing: 0; }
 
 /* Keep the desktop activity bar out of the scene without shrinking touch targets. */
 html:not(.tw-touch-mode) .sd-bottom { bottom: clamp(14px, 3vh, 28px); }
