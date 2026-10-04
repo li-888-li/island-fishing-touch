@@ -139,7 +139,7 @@ body { overscroll-behavior: none; }
   font: 14px/1.5 system-ui, sans-serif;
   box-shadow: 0 12px 40px #0009;
 }
-.tw-graphics-error p { margin: 8px 0 14px; overflow-wrap: anywhere; }
+.tw-graphics-error p { margin: 8px 0 14px; overflow-wrap: anywhere; white-space: pre-wrap; }
 .tw-graphics-error button { border: 0; border-radius: 8px; padding: 10px 15px; background: #e6dab2; color: #143b39; font: inherit; }
 
 /* Keep the desktop activity bar out of the scene without shrinking touch targets. */

@@ -39,6 +39,7 @@
   };
   const resumeAudio = () => window.__app?.audio?.resume?.();
 
+  const graphicsMessages = [];
   function showGraphicsError(message) {
     let notice = document.getElementById('tw-graphics-error');
     if (!notice) {
@@ -56,7 +57,9 @@
       notice.append(title, detail, reload);
       document.body.appendChild(notice);
     }
-    notice.querySelector('p').textContent = String(message || '请将此画面截图发给我排查。').slice(0, 240);
+    const detail = String(message || '请将此画面截图发给我排查。').slice(0, 180);
+    if (!graphicsMessages.includes(detail) && graphicsMessages.length < 3) graphicsMessages.push(detail);
+    notice.querySelector('p').textContent = graphicsMessages.join('\n\n');
   }
   window.addEventListener('tw-gpu-error', event => showGraphicsError(event.detail));
 
