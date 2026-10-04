@@ -37,5 +37,5 @@ createServer(async (request, response) => {
     response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('找不到文件');
   }
 }).listen(port, host, () => {
-  console.log(`海边慢时光网页体验：http://${host}:${port}/`);
+  console.log(`海岛钓鱼触屏版：http://${host}:${port}/`);
 });

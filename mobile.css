@@ -91,7 +91,7 @@ body { overscroll-behavior: none; }
 }
 .tw-tools {
   position: absolute;
-  top: calc(env(safe-area-inset-top) + 82px);
+  top: calc(env(safe-area-inset-top) + 126px);
   right: var(--tw-edge-right);
   display: flex;
   gap: 7px;
@@ -100,7 +100,7 @@ body { overscroll-behavior: none; }
 .tw-tools button { min-height: 42px; padding-inline: 11px; }
 .tw-extra {
   position: absolute;
-  top: calc(env(safe-area-inset-top) + 137px);
+  top: calc(env(safe-area-inset-top) + 178px);
   right: var(--tw-edge-right);
   display: grid;
   grid-template-columns: repeat(2, minmax(58px, 1fr));
@@ -176,12 +176,17 @@ body { overscroll-behavior: none; }
   html.tw-touch-mode .sd-daylight { display: none; }
 }
 
-@media (max-height: 450px) {
+@media (max-height: 450px) and (min-aspect-ratio: 4/3) {
   html.tw-touch-mode .tw-stick { width: 102px; }
   html.tw-touch-mode .tw-actions { grid-template-columns: repeat(2, 55px); gap: 5px; }
   html.tw-touch-mode .tw-touch button { min-height: 41px; }
   html.tw-touch-mode .tw-actions .tw-cast { min-height: 44px; }
-  html.tw-touch-mode .tw-tools { top: calc(env(safe-area-inset-top) + 63px); }
-  html.tw-touch-mode .tw-extra { top: calc(env(safe-area-inset-top) + 112px); }
+  html.tw-touch-mode .tw-tools { top: calc(env(safe-area-inset-top) + 116px); }
+  html.tw-touch-mode .tw-extra {
+    top: calc(env(safe-area-inset-top) + 116px);
+    left: var(--tw-edge-left);
+    right: auto;
+    display: flex;
+  }
   html.tw-touch-mode .sd-instruments { display: none; }
 }
