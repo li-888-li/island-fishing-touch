@@ -124,6 +124,24 @@ body { overscroll-behavior: none; }
 .tw-unsupported h1 { margin: 0; font-size: clamp(20px, 5vw, 30px); }
 .tw-unsupported p { margin: 0; max-width: 35rem; }
 
+/* Keep the desktop activity bar out of the scene without shrinking touch targets. */
+html:not(.tw-touch-mode) .sd-bottom { bottom: clamp(14px, 3vh, 28px); }
+html:not(.tw-touch-mode) .sd-nav {
+  max-width: calc(100vw - 16px);
+  overflow-x: auto;
+  gap: 0;
+  padding: 2px;
+  border-radius: 8px;
+  background: #162c2a82;
+}
+html:not(.tw-touch-mode) .sd-nav button {
+  min-width: 0;
+  padding: 6px 10px;
+  font-size: 11px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
 @media all {
   html.tw-touch-mode .sd-header {
     top: max(10px, env(safe-area-inset-top));
