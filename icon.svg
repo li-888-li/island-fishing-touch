@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1">
+      <stop stop-color="#174a58"/><stop offset=".58" stop-color="#f4ba79"/><stop offset="1" stop-color="#f4d6a3"/>
+    </linearGradient>
+    <linearGradient id="sea" x2="0" y2="1">
+      <stop stop-color="#3b9f9d"/><stop offset="1" stop-color="#0d5154"/>
+    </linearGradient>
+    <clipPath id="round"><rect width="512" height="512" rx="96"/></clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="512" height="512" fill="url(#sky)"/>
+    <circle cx="354" cy="180" r="73" fill="#fff0ba"/>
+    <path d="M0 282c93-25 190 25 284 0s161-13 228 8v222H0z" fill="url(#sea)"/>
+    <path d="M0 362c86-39 160-28 237-2 78 27 168 16 275-20v172H0z" fill="#0c696b"/>
+    <path d="M-10 436c121-48 206-31 278-10 83 25 148 3 254-36v122H-10z" fill="#f2d9a6"/>
+    <path d="M126 98c29 88 29 188 5 278" fill="none" stroke="#3b392c" stroke-width="20" stroke-linecap="round"/>
+    <path d="M135 130C88 72 53 89 32 106c47-4 78 18 103 47M135 130c-11-67 26-92 63-97-35 31-41 69-45 111M135 130c54-52 91-38 114-18-43 0-73 19-94 42" fill="none" stroke="#214b38" stroke-width="27" stroke-linecap="round"/>
+  </g>
+</svg>

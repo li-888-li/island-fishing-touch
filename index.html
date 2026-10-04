@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#143b39">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <title>海边慢时光 · 马尔代夫小岛</title>
+  <script>
+    // Start touch devices with a lighter scene while keeping full quality available.
+    const query = new URLSearchParams(location.search);
+    if (matchMedia('(pointer: coarse)').matches && !query.has('quality')) {
+      query.set('quality', 'lite');
+      query.set('scale', '0.65');
+      for (const option of ['noClouds', 'noHaze', 'noCaustics', 'noSim']) query.set(option, '');
+      location.replace(`${location.pathname}?${query.toString()}${location.hash}`);
+    }
+  </script>
+  <link rel="preload" as="image" href="./ui/loading-island.jpg" fetchpriority="high">
+  <!-- The loading picture and its styles are available before the game bundle starts. -->
+  <style>html,body{background:#172e2b;width:100%;height:100%;margin:0;overflow:hidden}#loader{isolation:isolate;color:#fff9e9;z-index:100;background:#172e2b;place-items:center;font:13px Microsoft YaHei UI,Microsoft YaHei,sans-serif;display:grid;position:fixed;inset:0;overflow:hidden}.sd-loading-backdrop{object-fit:cover;object-position:center;z-index:0;width:100%;height:100%;position:absolute;inset:0}#loader:after{content:"";z-index:1;background:linear-gradient(#051c1d1f,#051c1d3b 55%,#051c1d70),radial-gradient(#051c1d52,#0000 65%);position:absolute;inset:0}.sd-loading{z-index:2;text-align:center;text-shadow:0 2px 16px #092c2b;width:min(280px,100vw - 64px);position:relative}.sd-loading-name{letter-spacing:.22em;margin:0 0 28px;font:clamp(25px,2vw,32px) STZhongsong,华文中宋,SimSun,serif}.sd-loading p{color:#edf0e2;letter-spacing:.08em;margin:0 0 26px;font-size:12px}.sd-loading progress{-webkit-appearance:none;appearance:none;accent-color:#eee4bd;background:#f4efd940;border:0;width:100%;height:2px;display:block}.sd-loading progress::-webkit-progress-bar{background:#f4efd940}.sd-loading progress::-webkit-progress-value{background:#eee4bd}.sd-loading small{color:#edf0e2;font-variant-numeric:tabular-nums;letter-spacing:.1em;margin-top:14px;font-size:10px;display:block}</style>
+  <script type="module" crossorigin src="./assets/index-C7e5D7EK.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/GPU-DXG-5ZBt.js">
+  <link rel="modulepreload" crossorigin href="./assets/Frame-WV_hooBp.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-vsuReAnV.css">
+  <link rel="stylesheet" href="./mobile.css">
+  <script defer src="./mobile.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="loader" role="status" aria-live="polite" aria-label="正在回到小岛">
+    <img class="sd-loading-backdrop" src="./ui/loading-island.jpg" width="1920" height="1080" alt="" aria-hidden="true" fetchpriority="high" decoding="sync">
+    <div class="sd-loading">
+      <div class="sd-loading-name">海边慢时光</div>
+      <p data-loading>正在回到你的小岛</p>
+      <progress max="1" value="0"></progress>
+      <small data-percent>0%</small>
+    </div>
+  </div>  <div id="tw-touch" class="tw-touch" hidden aria-label="触屏游戏控制">
+    <div class="tw-look" aria-label="滑动转动视角"></div>
+    <div class="tw-stick" aria-label="移动摇杆">
+      <div class="tw-stick-ring"><div class="tw-stick-thumb"></div></div>
+    </div>
+    <div class="tw-actions" role="group" aria-label="游戏操作">
+      <button type="button" data-key="KeyE" aria-label="互动">互动</button>
+      <button type="button" data-key="KeyR" aria-label="拿出或收起鱼竿">鱼竿</button>
+      <button type="button" data-key="Space" aria-label="跳跃或上浮">跳跃</button>
+      <button type="button" data-key="ShiftLeft" aria-label="按住奔跑或加速">加速</button>
+      <button type="button" data-mouse="left" class="tw-cast" aria-label="按住抛竿，松开投出">按住抛竿</button>
+    </div>
+    <div class="tw-tools" role="group" aria-label="菜单和画质">
+      <button type="button" data-key="KeyI" aria-label="背包">背包</button>
+      <button type="button" data-key="KeyH" aria-label="设置">设置</button>
+      <button type="button" id="tw-quality" aria-label="切换画质">画质</button>
+      <button type="button" id="tw-more" aria-expanded="false" aria-controls="tw-extra">更多</button>
+    </div>
+    <div id="tw-extra" class="tw-extra" role="group" aria-label="其他游戏操作" hidden>
+      <button type="button" data-key="KeyC" aria-label="蹲下或潜水">下潜</button>
+      <button type="button" data-key="KeyV" aria-label="切换船上视角">视角</button>
+      <button type="button" data-key="KeyL" aria-label="手电筒">手电</button>
+      <button type="button" data-mouse="right" aria-label="收回空线">收线</button>
+    </div>
+  </div>
+  <div id="tw-unsupported" class="tw-unsupported" hidden>
+    <h1>此浏览器暂时无法运行实时画面</h1>
+    <p>请更新平板系统及浏览器，并使用支持 WebGPU 的设备打开。</p>
+  </div>
+
+</body>
+</html>

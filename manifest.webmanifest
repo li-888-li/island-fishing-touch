@@ -1,0 +1,14 @@
+{
+  "name": "海边慢时光 · 马尔代夫小岛",
+  "short_name": "海边慢时光",
+  "description": "可在手机和平板触控体验的海岛钓鱼网页游戏",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#143b39",
+  "theme_color": "#143b39",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
