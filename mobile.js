@@ -100,6 +100,8 @@
     }
     clearInterval(gpuWatch);
     if (app.post?.params?.sharpen) app.post.params.sharpen.value = 0.55;
+    // Touch browsers can oscillate the full-screen brightness while metering moving water.
+    if (app.post?.autoExposure?.enabled) app.post.autoExposure.enabled.value = 0;
     if (new URLSearchParams(location.search).has('compat')) setCompatibility(app, true);
     device.addEventListener?.('uncapturederror', event => {
       showGraphicsError(event.error?.message || 'WebGPU 画面错误');
