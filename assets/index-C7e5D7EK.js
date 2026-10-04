@@ -1429,15 +1429,15 @@ fn cofactor3( m: mat4x4f ) -> mat3x3f {
 }
 
 fn materialVertex( v: ptr<function, VertexData>, o: ptr<function, VSOut> ) {
-${e.vertex}
+${e.vertex.replace(/\bv\./g,"(*v).").replace(/\bo\./g,"(*o).")}
 }
 
 fn materialSurface( in: FragInput, s: ptr<function, Surface> ) {
-${e.surface}
+${e.surface.replace(/\bs\./g,"(*s).")}
 }
 
 fn materialOutput( in: FragInput, s: Surface, r: ptr<function, FragResult> ) {
-${e.output}
+${e.output.replace(/\br\./g,"(*r).")}
 }
 
 #if CLIP_DISTANCES
