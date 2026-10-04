@@ -1437,7 +1437,7 @@ ${e.surface.replace(/\bs\./g,"(*s).")}
 }
 
 fn materialOutput( in: FragInput, s: Surface, r: ptr<function, FragResult> ) {
-${e.output.replace(/\br\./g,"(*r).")}
+${e.output.replace(/\br\.(color|velocity|mask)\b/g,"(*r).$1")}
 }
 
 #if CLIP_DISTANCES
