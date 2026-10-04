@@ -1,6 +1,6 @@
 # 海岛钓鱼触屏版
 
-这是一个**非官方的触控适配体验**，基于原作者 dgreenheck 的 [Tidewater](https://github.com/dgreenheck/tidewater) 开源项目和电脑上现有中文桌面版的网页资源。原游戏、引擎及素材不是本项目原创；本项目添加了触控操作、屏幕适配、主屏幕配置和本地预览服务。它不会安装到 C 盘，也不会改动原来的桌面版。原项目源码位于 `E:\aaa\tidewater-source`。
+这是一个**非官方的触控适配体验**，基于原作者 dgreenheck 的 [Tidewater](https://github.com/dgreenheck/tidewater) 开源项目和电脑上现有中文桌面版的网页资源。原游戏、引擎及素材不是本项目原创；本项目添加了触控操作、屏幕适配、主屏幕配置和本地预览服务。它不会安装到 C 盘，也不会改动原来的桌面版。
 
 ## 在这台电脑上预览
 
@@ -15,7 +15,7 @@
 
 ## 平板打开方式
 
-源文件已发布到 [GitHub 仓库](https://github.com/li-888-li/tidewater-touch-web)。平板无法直接使用电脑的 `127.0.0.1` 地址；需要启用 GitHub Pages 的 HTTPS 游戏网址后，Android 和 iPad 才能在浏览器直接打开，并可通过浏览器菜单添加到主屏幕，无需应用商店。游戏要求设备与浏览器支持 WebGPU，屏幕适配无法替代这个硬件要求。
+在 Android 或 iPad 浏览器打开 [海岛钓鱼触屏版](https://li-888-li.github.io/island-fishing-touch/)，可通过浏览器菜单添加到主屏幕，无需应用商店。源文件在 [GitHub 仓库](https://github.com/li-888-li/island-fishing-touch)。平板无法直接使用电脑的 `127.0.0.1` 地址。游戏要求设备与浏览器支持 WebGPU，屏幕适配无法替代这个硬件要求。
 
 网页存档保存在浏览器中，与原桌面版存档分开。动态壁纸尚未制作，后续可基于同一套画面资源开发。
 
