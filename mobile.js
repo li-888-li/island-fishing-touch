@@ -47,7 +47,12 @@
       code, key: keyNames[code] ?? code, bubbles: true, cancelable: true,
     }));
   };
-  const resumeAudio = () => window.__app?.audio?.resume?.();
+  const resumeAudio = () => {
+    const audio = window.__app?.audio;
+    if (audio && !audio.muted && !audio.enabled) void audio.resume();
+  };
+  document.addEventListener('pointerdown', resumeAudio, true);
+  document.addEventListener('touchend', resumeAudio, { capture: true, passive: true });
 
   const graphicsMessages = [];
   function showGraphicsError(message) {
@@ -102,6 +107,9 @@
     if (app.post?.params?.sharpen) app.post.params.sharpen.value = 0.55;
     // Touch browsers can oscillate the full-screen brightness while metering moving water.
     if (app.post?.autoExposure?.enabled) app.post.autoExposure.enabled.value = 0;
+    if (app.post?.motionBlur?.shutter) app.post.motionBlur.shutter.value = 0;
+    if (app.post?.params?.grain) app.post.params.grain.value = 0;
+    if (app.post?.params?.bloom) app.post.params.bloom.value = 0.02;
     if (new URLSearchParams(location.search).has('compat')) setCompatibility(app, true);
     device.addEventListener?.('uncapturederror', event => {
       showGraphicsError(event.error?.message || 'WebGPU 画面错误');
@@ -137,17 +145,21 @@
   const stick = controls.querySelector('.tw-stick');
   const thumb = controls.querySelector('.tw-stick-thumb');
   let stickPointer = null;
+  let stickOriginX = 0;
+  let stickOriginY = 0;
   function moveStick(event) {
     const rect = stick.getBoundingClientRect();
     const radius = rect.width * 0.34;
-    const x = Math.max(-1, Math.min(1, (event.clientX - rect.left - rect.width / 2) / radius));
-    const y = Math.max(-1, Math.min(1, (event.clientY - rect.top - rect.height / 2) / radius));
+    let x = Math.max(-1, Math.min(1, (event.clientX - stickOriginX) / radius));
+    let y = Math.max(-1, Math.min(1, (event.clientY - stickOriginY) / radius));
+    if (Math.abs(x) < Math.abs(y) * 0.65) x = 0;
+    else if (Math.abs(y) < Math.abs(x) * 0.65) y = 0;
     const length = Math.max(1, Math.hypot(x, y));
     thumb.style.transform = `translate(calc(-50% + ${x / length * radius}px), calc(-50% + ${y / length * radius}px))`;
-    emitKey('KeyW', y < -0.28);
-    emitKey('KeyS', y > 0.28);
-    emitKey('KeyA', x < -0.28);
-    emitKey('KeyD', x > 0.28);
+    emitKey('KeyW', y < -0.38);
+    emitKey('KeyS', y > 0.38);
+    emitKey('KeyA', x < -0.38);
+    emitKey('KeyD', x > 0.38);
   }
   function releaseStick(event) {
     if (event && event.pointerId !== stickPointer) return;
@@ -161,8 +173,10 @@
     event.stopPropagation();
     resumeAudio();
     stickPointer = event.pointerId;
+    stickOriginX = event.clientX;
+    stickOriginY = event.clientY;
     stick.setPointerCapture(event.pointerId);
-    moveStick(event);
+    thumb.style.transform = 'translate(-50%, -50%)';
   });
   stick.addEventListener('pointermove', event => {
     if (event.pointerId === stickPointer) moveStick(event);
@@ -277,6 +291,14 @@
       setCompatibility(app, enabled);
       history.replaceState(null, '', `${location.pathname}?${query.toString()}${location.hash}`);
     } else location.search = query.toString();
+  });
+  const soundButton = document.getElementById('tw-sound');
+  soundButton.addEventListener('click', async () => {
+    const audio = window.__app?.audio;
+    if (!audio) { soundButton.textContent = '声音不可用'; return; }
+    audio.setMuted(false);
+    soundButton.textContent = await audio.resume() ? '声音已开' : '请再点一次';
+    setTimeout(() => { soundButton.textContent = '开启声音'; }, 1800);
   });
   const more = document.getElementById('tw-more');
   const extra = document.getElementById('tw-extra');
