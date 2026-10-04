@@ -22,6 +22,16 @@
   }
   if (!touchMode) return;
   controls.hidden = false;
+  const gameSurface = target => target?.closest?.('#tw-touch, .sd-hud, #app canvas');
+  document.addEventListener('contextmenu', event => {
+    if (gameSurface(event.target)) event.preventDefault();
+  }, true);
+  document.addEventListener('selectstart', event => {
+    if (gameSurface(event.target)) event.preventDefault();
+  }, true);
+  controls.addEventListener('touchstart', event => {
+    if (event.target.closest('button[data-key], button[data-mouse], .tw-stick, .tw-look')) event.preventDefault();
+  }, { capture: true, passive: false });
 
   const keyNames = {
     KeyW: 'w', KeyA: 'a', KeyS: 's', KeyD: 'd',
@@ -191,6 +201,7 @@
 
   for (const button of controls.querySelectorAll('button[data-key], button[data-mouse]')) {
     let activePointer = null;
+    let activeTouch = null;
     const setDown = down => {
       button.classList.toggle('is-held', down);
       const code = button.dataset.key;
@@ -213,11 +224,26 @@
     const release = event => {
       if (event.pointerId !== activePointer) return;
       activePointer = null;
-      setDown(false);
+      if (activeTouch === null) setDown(false);
     };
     button.addEventListener('pointerup', release);
     button.addEventListener('pointercancel', release);
     button.addEventListener('lostpointercapture', release);
+    button.addEventListener('touchstart', event => {
+      event.preventDefault();
+      if (activeTouch !== null) return;
+      activeTouch = event.changedTouches[0]?.identifier ?? 0;
+      resumeAudio();
+      setDown(true);
+    }, { passive: false });
+    const releaseTouch = event => {
+      if (activeTouch === null || !Array.from(event.changedTouches).some(touch => touch.identifier === activeTouch)) return;
+      event.preventDefault();
+      activeTouch = null;
+      if (activePointer === null) setDown(false);
+    };
+    button.addEventListener('touchend', releaseTouch, { passive: false });
+    button.addEventListener('touchcancel', releaseTouch, { passive: false });
   }
 
   const qualityButton = document.getElementById('tw-quality');
